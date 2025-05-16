@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {    // Header scroll effect    const header = document.querySelector('.glass-header');    const hero = document.querySelector('.hero');        window.addEventListener('scroll', function() {        // Get hero section height to determine when to change header style        const heroHeight = hero ? hero.offsetHeight : 300;                if (window.scrollY > heroHeight) {            // Past hero section - add scrolled class            header.classList.add('scrolled');        } else if (window.scrollY > 50) {            // Scrolled a little bit but still in hero - add semi-transparent white            header.classList.remove('scrolled');            header.style.background = 'rgba(255, 255, 255, 0.8)';            header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.05)';        } else {            // Top of page            header.classList.remove('scrolled');            header.style.background = 'rgba(255, 255, 255, 0.15)';            header.style.boxShadow = 'none';        }    });
+document.addEventListener('DOMContentLoaded', function() {    // Header scroll effect    const header = document.querySelector('.glass-header');    const hero = document.querySelector('.hero');        window.addEventListener('scroll', function() {        // Get hero section height to determine when to change header style        const heroHeight = hero ? hero.offsetHeight : 300;                if (window.scrollY > heroHeight) {            // Past hero section - add scrolled class with animated gradient            header.classList.add('scrolled');            // Set animated gradient background            header.style.background = '';            header.style.animation = 'gradient 15s ease infinite';            header.style.backgroundSize = '400% 400%';            header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';        } else if (window.scrollY > heroHeight / 2) {            // Past half of hero section - semi-opaque            header.classList.remove('scrolled');            header.style.background = 'rgba(255, 255, 255, 0.75)';            header.style.animation = 'none';            header.style.backdropFilter = 'blur(15px)';            header.style.webkitBackdropFilter = 'blur(15px)';            header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.08)';        } else if (window.scrollY > 20) {            // Scrolled a little bit but still in hero - subtle glass effect            header.classList.remove('scrolled');            header.style.background = 'rgba(255, 255, 255, 0.5)';            header.style.animation = 'none';            header.style.backdropFilter = 'blur(15px)';            header.style.webkitBackdropFilter = 'blur(15px)';            header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.05)';        } else {            // Top of page            header.classList.remove('scrolled');            header.style.background = 'rgba(255, 255, 255, 0.25)';            header.style.animation = 'none';            header.style.backdropFilter = 'blur(15px)';            header.style.webkitBackdropFilter = 'blur(15px)';            header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';        }    });
 
     // Mobile menu toggle
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {    // Header scroll e
     const navLinks = document.querySelectorAll('header a, footer a');
     
     navLinks.forEach(link => {
-        if (link.getAttribute('href').startsWith('#')) {
+        if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 
@@ -142,8 +142,10 @@ document.addEventListener('DOMContentLoaded', function() {    // Header scroll e
                 const targetSection = document.querySelector(targetId);
                 
                 if (targetSection) {
+                    // Adjust offset based on header height for better scrolling
+                    const headerHeight = header.offsetHeight;
                     window.scrollTo({
-                        top: targetSection.offsetTop - 80,
+                        top: targetSection.offsetTop - headerHeight - 20, // Added 20px buffer
                         behavior: 'smooth'
                     });
                 }
